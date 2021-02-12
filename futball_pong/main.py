@@ -49,7 +49,23 @@ def move_player():
 
 def move_player2():
     global player2_y
-    player2_y = ball_y
+
+
+
+    if player2_moveup:
+        player2_y -= 5
+    else:
+        player2_y += 0
+
+    if player2_movedown:
+        player2_y += 5
+    else:
+        player2_y -= 0
+
+    if player2_y <= 0:
+        player2_y = 0
+    elif player2_y > 1150:
+        player2_y = 1150
 
 def move_ball():
     global ball_x
@@ -60,6 +76,7 @@ def move_ball():
     global score2
     global score1_img
     global score2_img
+    global win
 
     ball_x += ball_dir
     ball_y += ball_dir_y
@@ -90,9 +107,11 @@ def move_ball():
         ball_x = 617
         ball_y = 337
         ball_dir_y *= -1
-        ball_dir *= -1
+        ball_dir *= 1
         score1 += 1
         score1_img = pygame.image.load ( 'assets/score/' + str ( score1 ) + '.png' )
+
+
 
 
 def draw():
@@ -103,9 +122,9 @@ def draw():
         window.blit ( ball, (ball_x, ball_y) )
         window.blit(score1_img, (500, 50))
         window.blit(score2_img, (710, 50))
-        move_ball ()
-        move_player ()
-        move_player2 ()
+        move_ball()
+        move_player()
+
 
     else:
         window.blit(win, (300, 330))
@@ -122,13 +141,30 @@ while loop:
                 player1_moveup = True
             if events.key == pygame.K_s:
                 player1_movedown = True
+
         if events.type == pygame.KEYUP:
             if events.key == pygame.K_w:
                 player1_moveup = False
             if events.key == pygame.K_s:
                 player1_movedown = False
 
+        if events.type == pygame.QUIT:
+            loop = False
+        if events.type == pygame.KEYDOWN:
+            if events.key == pygame.K_UP:
+                player2_moveup = True
+            if events.key == pygame.K_DOWN:
+                player2_movedown = True
+
+        if events.type == pygame.KEYUP:
+            if events.key == pygame.K_UP:
+                player2_moveup = False
+            if events.key == pygame.K_DOWN:
+                player2_movedown = False
+
+
+
 
     draw()
-
+    move_player2 ()
     pygame.display.update()
